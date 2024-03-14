@@ -3,6 +3,9 @@ package br.com.cleilsonandrade.springtwitterapi.entities;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import br.com.cleilsonandrade.springtwitterapi.controllers.dtos.LoginRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,5 +65,9 @@ public class User {
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  public boolean isLoginCorrect(LoginRequestDto loginRequest, PasswordEncoder passwordEncoder) {
+    return passwordEncoder.matches(loginRequest.password(), this.password);
   }
 }
