@@ -20,7 +20,7 @@ import br.com.cleilsonandrade.springtwitterapi.entities.Role;
 import br.com.cleilsonandrade.springtwitterapi.repositories.UserRepository;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/login")
 public class TokenController {
   private final JwtEncoder jwtEncoder;
   private final UserRepository userRepository;
@@ -33,7 +33,7 @@ public class TokenController {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-  @PostMapping("/login")
+  @PostMapping
   public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
     var user = userRepository.findByUsername(loginRequest.username());
 
