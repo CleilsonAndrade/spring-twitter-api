@@ -1,8 +1,11 @@
 package br.com.cleilsonandrade.springtwitterapi.controllers;
 
+import java.time.Instant;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +37,16 @@ public class TokenController {
     if (user.isEmpty() || !user.get().isLoginCorrect(loginRequest, bCryptPasswordEncoder)) {
       throw new BadCredentialsException("User or password is invalid");
     }
+
+    var now = Instant.now();
+    var expiresIn = 300L;
+
+    var claims = JwtClaimsSet.builder()
+        .issuer("mybackend")
+        .subject(user.get().getUserId().toString())
+        .issuedAt(now)
+        .expiresAt(now.plusSeconds(expiresIn))
+        .build();
   }
 
 }
